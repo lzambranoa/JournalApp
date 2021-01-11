@@ -1,13 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom'
+import validator from 'validator';
 import { startGoogleLogin, startLoginEmailPassWord } from '../../actions/auth';
+import { setError } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 
 export const LoginScreen = () => {
 
     const dispatch = useDispatch();
+    const { loading } = useSelector( state => state.ui );
 
     const [ formValues, handleInputChange ] = useForm({
         email: 'leonardo@hotmail.com',
@@ -18,13 +21,27 @@ export const LoginScreen = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        dispatch(startLoginEmailPassWord(email, password));
+        if(isValidate()){
+            dispatch(startLoginEmailPassWord(email, password));
+        }
     }
 
     // este metodo se llama al momento de llamar el boton
     // de login con google
     const handleGoogleLogin = () => {
         dispatch( startGoogleLogin() );
+    }
+
+    const handleEmailLogin = () => {
+        dispatch(startLoginEmailPassWord(email, password));
+    }
+
+    const isValidate = () => {
+        if(!validator.isEmail(email)){
+            dispatch(setError('Email is not valid'))
+            return false;
+        } 
+        return true;
     }
 
     return (
@@ -56,6 +73,8 @@ export const LoginScreen = () => {
                 <button
                     type="submit"
                     className="btn btn-primary btn-block"
+                    onClick={handleEmailLogin}
+                    disabled={ loading }
                 >
                     Login
                 </button>

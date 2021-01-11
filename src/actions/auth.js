@@ -1,14 +1,47 @@
 import { types } from "../types/types";
 import { firebase, googleAuthProvider } from '../firebase/firebaseConfig';
+import { finishLoading, startLoading } from "./ui";
 
-export const startLoginEmailPassWord = (email, password) =>{
-    return (dispatch) =>{
 
-        setTimeout(() => {
-            dispatch(login(123,'dani00'));
-        }, 3500);
+/*Esta action nos va permitir logearnos con un susraio y contraseña
+ya creados o registrados */
+export const startLoginEmailPassWord = (email, password) => {
+    return (dispatch) => {
+
+        dispatch(startLoading());
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(({ user }) => {
+            dispatch(login(user.uid, user.displayName));
+
+            dispatch( finishLoading() );
+        })
+        .catch( e => {
+            console.log(e);
+            dispatch( finishLoading() );
+        })
     }
 }
+
+/*Esta action nos va permitir registrar el email, password y el name en el firebase*/
+
+export const startRegisterWithEmailPasswordName = (email, password, name) => {
+    return (dispatch) => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(async ({ user }) => {
+
+                await user.updateProfile({ displayName: name }); // actualiza la informacion del name
+                dispatch(
+                    login(user.uid, user.displayName)
+                )
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
+}
+
+
 
 /*Esta action nos va permitir la autenticación de Google
 es una funcion con un callback que nos retorna una promesa usando el Provider
@@ -18,7 +51,7 @@ export const startGoogleLogin = () => {
     return (dispatch) => {
 
         firebase.auth().signInWithPopup(googleAuthProvider)
-            .then(({user}) => {
+            .then(({ user }) => {
                 dispatch(
                     login(user.uid, user.displayName)
                 )
