@@ -48,7 +48,10 @@ export const LoginScreen = () => {
         <>
             <h3 className="auth__title">Login</h3>
 
-            <form onSubmit={handleLogin} >
+            <form 
+            className="animate_animated animate_fadeIn animate_faster"    
+            onSubmit={handleLogin} 
+            >
 
                 <input 
                     type="text"

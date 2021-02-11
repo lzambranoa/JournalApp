@@ -2,6 +2,7 @@ import { types } from "../types/types";
 import Swal from 'sweetalert2';
 import { firebase, googleAuthProvider } from '../firebase/firebaseConfig';
 import { finishLoading, startLoading } from "./ui";
+import { noteLogout } from "./notes";
 
 
 /*Esta action nos va permitir logearnos con un susraio y contraseña
@@ -79,6 +80,7 @@ export const startLogout = () => {
       await firebase.auth().signOut();  // cierra la sesion en firebase
 
       dispatch(logout())
+      dispatch( noteLogout());
     }
 }
 
