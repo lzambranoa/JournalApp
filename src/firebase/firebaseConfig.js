@@ -2,17 +2,35 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
+// console.log( process.env );
+
 // Estos datos son traidos desde la consola de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyACgl9Vuf2ka3B2Qwr_gjkGF43_cldBzHI",
-    authDomain: "react-app-cursos-5dc57.firebaseapp.com",
-    projectId: "react-app-cursos-5dc57",
-    storageBucket: "react-app-cursos-5dc57.appspot.com",
-    messagingSenderId: "755900948998",
-    appId: "1:755900948998:web:8c2177a80744464697d987"
+    apiKey: process.env.REACT_APP_APIKEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    projectId: process.env.REACT_APP_PROJECTID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_APPID
   };
-  // Se llama a la inicializacion de Firebase
-  firebase.initializeApp(firebaseConfig);
+
+  // const firebaseConfigTesting = {
+  //   apiKey: "AIzaSyA7mLV91bgf62A5Df3XSZ__Vtaa9pb9_rs",
+  //   authDomain: "redux-demo-fe25e.firebaseapp.com",
+  //   projectId: "redux-demo-fe25e",
+  //   storageBucket: "redux-demo-fe25e.appspot.com",
+  //   messagingSenderId: "1057039354147",
+  //   appId: "1:1057039354147:web:532c4b6ba9c6f691f7a496"
+  // };
+
+  // if( process.env.NODE_ENV === 'test' ) {
+  //     //testing
+  //   firebase.initializeApp(firebaseConfigTesting);
+  // } else {
+  //     //dev/prod
+  //     // Se llama a la inicializacion de Firebase
+      firebase.initializeApp(firebaseConfig);
+  // }
 
   // esta variable hace referencia a la base de datos
   // la vamos a usar para grabar la información
